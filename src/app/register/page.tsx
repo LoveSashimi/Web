@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import clsx from "clsx";
 
-function Register(props?: { className?: string }) {
+//switched from className?:string
+function Register(props?: { className: string }) {
   const [errors, setErrors] = useState<{
     username?: string;
     password?: string;
