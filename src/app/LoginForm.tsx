@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useState } from "react";
 
 function LoginForm(props?: { className?: string }) {
@@ -13,7 +14,7 @@ function LoginForm(props?: { className?: string }) {
 
   return (
     <form
-      className={clsx('flex flex-col gap-2 w-64', props?.className)}
+      className={clsx("flex flex-col gap-2 w-100 animate-fade animate-once animate-duration-[5000ms] animate-ease-in", props?.className)}
       onSubmit={async (ev) => {
         ev.preventDefault();
         const formData = new FormData(ev.target as HTMLFormElement);
@@ -21,7 +22,7 @@ function LoginForm(props?: { className?: string }) {
           method: "POST",
           body: formData,
           headers: {
-            Authorization: localStorage.getItem("token") ?? "",
+            Authorization: localStorage.getItem("userid") ?? "",
           },
         });
         if (response.status === 400) {
@@ -32,25 +33,26 @@ function LoginForm(props?: { className?: string }) {
         const body = (await response.json()) as {
           token: string;
         };
-        localStorage.setItem("token", body.token);
+        localStorage.setItem("userid", body.token);
         console.log({ body });
         setErrors(null);
         router.push("/search");
         console.log(response);
       }}
     >
+      <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-white md:text-5xl lg:text-6xl dark:text-white  mx-auto justify-center px-4 py-4">Rate My Gov</h1>
       <input
         type="text"
-        id="username"
-        name="username"
-        className="bg-white h-10 hover:placeholder:text-red-400 "
+        id="user_name_info"
+        name="user_name_info"
+        className="bg-white h-10 text-center hover:placeholder:text-red-400 "
         placeholder="Username"
       />
       <input
         type="text"
-        id="password"
-        name="password"
-        className="bg-white h-10 hover:placeholder:text-red-400"
+        id="user_password_info"
+        name="user_password_info"
+        className="bg-white h-10 text-center hover:placeholder:text-red-400"
         placeholder="Password"
       />
       {errors?.password && (
@@ -63,6 +65,13 @@ function LoginForm(props?: { className?: string }) {
         type="submit"
         className="bg-white px-4 py-2  text-black uppercase hover:bg-red-700 hover:font-bold rounded"
       />
+
+      <Link
+        href="/register"
+        className="bg-white text-center py-2 text-black uppercase hover:bg-red-700 hover:font-bold rounded"
+      >
+        Register
+      </Link>
     </form>
   );
 }

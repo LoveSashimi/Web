@@ -4,8 +4,9 @@ import { RowDataPacket } from "mysql2";
 
 export async function POST(request: Request) {
   const formData = await request.formData();
-  const username = formData.get("username") || "";
-  const password = formData.get("password") || "";
+  const username = formData.get("user_name_info") || "";
+  const password = formData.get("user_password_info") || "";
+  const userId = request.headers.get('Authorization');
     if (!username || ! password) {
       return NextResponse.json({
           'errors': {
@@ -17,11 +18,11 @@ export async function POST(request: Request) {
     }
 
   const query = `
-    select * FROM user WHERE username = ? 
+    select * FROM user WHERE user_name_info = ? 
     `;
   const result = await database.execute<
     ({
-      username: string;
+      userid: number;
       password: string;
       token: number | null;
     } & RowDataPacket)[]
@@ -29,20 +30,22 @@ export async function POST(request: Request) {
   const rows = result[0];
   if (rows.length === 0) {
     return NextResponse.json({
-      errors: { username: "User not found" },
+      errors: { username: "User not found, please hit REGISTER to create your account!" },
     }, {
       status: 400,
     });
   }
   const user = rows[0];
   const response = NextResponse.json({
-    token: user.username,
+    token: user.userid,
   });
   response.cookies.set({
-    name: 'token',
-    value: user.username,
+    name: 'userid',
+    value: `${user.userid}`,
     httpOnly: true,
     maxAge: 3600,
   });
   return response;
 }
+
+

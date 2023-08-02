@@ -8,8 +8,8 @@ const jsonParser = bodyParser.json();
 
 const con = mysql.createConnection({
   host: "localhost",
-  user: "username",
-  password: "password",
+  user: "user_name_info",
+  password: "user_password_info",
   database: "demo",
   port: 3306,
 });
@@ -26,7 +26,7 @@ con.connect(function (err) {
 app.use(jsonParser).post("/user", (req, res) => {
   const data = req.body;
   const query = `
-  INSERT INTO user (username, password) 
+  INSERT INTO user (user_name_info, user_password_info) 
   VALUES (?, ?)
   `;
   con.query(query, [data.username, data.password], (err, result) => {
