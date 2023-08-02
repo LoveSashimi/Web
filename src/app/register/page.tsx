@@ -5,7 +5,7 @@ import { useState } from "react";
 import clsx from "clsx";
 
 //switched from className?:string
-function Register(props?: { className: string }) {
+function Register() {
   const [errors, setErrors] = useState<{
     username?: string;
     password?: string;
@@ -15,7 +15,7 @@ function Register(props?: { className: string }) {
   return (
     <div className="flex-1 mx-auto justify-center px-4 py-4">
       <form
-        className={clsx("flex flex-col gap-2 w-64", props?.className)}
+        className={clsx("flex flex-col gap-2 w-64")}
         onSubmit={async (ev) => {
           ev.preventDefault();
           const formData = new FormData(ev.target as HTMLFormElement);
