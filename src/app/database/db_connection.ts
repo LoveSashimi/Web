@@ -7,12 +7,9 @@ const app = express();
 const jsonParser = bodyParser.json();
 
 const con = mysql.createConnection({
-  host: "localhost",
-  user: "user_name_info",
-  password: "user_password_info",
-  database: "demo",
-  port: 3306,
+  uri: process.env.DATABASE_URL,
 });
+
 
 con.connect(function (err) {
   if (err) throw err;
